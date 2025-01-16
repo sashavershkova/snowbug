@@ -2,8 +2,8 @@ import sys
 import io
 
 from snowman.snowman import (
-    snowman, add_wrong_letter, build_word_dict, is_word_guessed,
-    build_game_board, build_snowman_graphic
+    snowman, add_wrong_letter, build_letter_status_dict, is_word_guessed,
+    generate_word_progress_string, build_snowman_graphic
 )
 
 # Helper method ################################################################
@@ -16,12 +16,12 @@ def make_std_input(guesses):
 
 # Tests ########################################################################
 
-def test_build_word_dict_builds_guessed_letter_data():
+def test_build_letter_status_dict_builds_guessed_letter_data():
     # Arrange
     word = "snowman"
 
     # Act
-    letters_guessed = build_word_dict(word)
+    letters_guessed = build_letter_status_dict(word)
 
     # Assert
     assert letters_guessed == {
@@ -34,12 +34,12 @@ def test_build_word_dict_builds_guessed_letter_data():
     }
 
 
-def test_build_word_dict_builds_guessed_letter_data_excluding_non_letter_characters():
+def test_build_letter_status_dict_builds_guessed_letter_data_excluding_non_letter_characters():
     # Arrange
     word = "ad hoc"
 
     # Act
-    letters_guessed = build_word_dict(word)
+    letters_guessed = build_letter_status_dict(word)
 
     # Assert
     assert letters_guessed == {
@@ -87,7 +87,7 @@ def test_is_word_guessed_detects_guessed_word():
     assert is_guessed
 
 
-def test_build_game_board_builds_empty_word_with_only_alpha():
+def test_generate_word_progress_string_builds_empty_word_with_only_alpha():
     # Arrange
     word = "snowman"
     word_dict = {
@@ -100,13 +100,13 @@ def test_build_game_board_builds_empty_word_with_only_alpha():
     }
 
     # Act
-    board = build_game_board(word, word_dict)
+    board = generate_word_progress_string(word, word_dict)
 
     # Assert
     assert board == "_ _ _ _ _ _ _"
 
 
-def test_build_game_board_builds_complete_word_with_only_alpha():
+def test_generate_word_progress_string_builds_complete_word_with_only_alpha():
     # Arrange
     word = "snowman"
     word_dict = {
@@ -119,13 +119,13 @@ def test_build_game_board_builds_complete_word_with_only_alpha():
     }
 
     # Act
-    board = build_game_board(word, word_dict)
+    board = generate_word_progress_string(word, word_dict)
 
     # Assert
     assert board == "s n o w m a n"
 
 
-def test_build_game_board_builds_empty_word_with_non_alpha():
+def test_generate_word_progress_string_builds_empty_word_with_non_alpha():
     # Arrange
     word = "ad hoc"
     word_dict = {
@@ -137,13 +137,13 @@ def test_build_game_board_builds_empty_word_with_non_alpha():
     }
 
     # Act
-    board = build_game_board(word, word_dict)
+    board = generate_word_progress_string(word, word_dict)
 
     # Assert
     assert board == "_ _   _ _ _"
 
 
-def test_build_game_board_builds_complete_word_with_non_alpha():
+def test_generate_word_progress_string_builds_complete_word_with_non_alpha():
     # Arrange
     word = "ad hoc"
     word_dict = {
@@ -155,7 +155,7 @@ def test_build_game_board_builds_complete_word_with_non_alpha():
     }
 
     # Act
-    board = build_game_board(word, word_dict)
+    board = generate_word_progress_string(word, word_dict)
 
     # Assert
     assert board == "a d   h o c"
